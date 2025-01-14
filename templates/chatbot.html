@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chatbot - Address Maker</title>
+
+    <!-- Add FontAwesome for icons -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+
+    <style>
+        /* General body style */
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        h1 {
+            color: #333;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        /* Chat container style */
+        .chat {
+            margin-top: 20px;
+            max-width: 600px;
+            width: 100%;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            overflow-y: auto;
+            height: 400px;
+            margin-bottom: 20px;
+        }
+
+        /* Messages style */
+        .user-message, .bot-reply {
+            margin-bottom: 15px;
+            padding: 10px;
+            border-radius: 8px;
+            line-height: 1.5;
+        }
+
+        .user-message {
+            background-color: #e0f7fa;
+            color: #00796b;
+        }
+
+        .bot-reply {
+            background-color: #f1f8e9;
+            color: #388e3c;
+        }
+
+        /* Form container style */
+        form {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 15px;
+            width: 100%;
+            max-width: 600px;
+        }
+
+        /* Textarea style */
+        textarea {
+    width: 103%;
+    max-width: 650px;  /* Ensure it matches the width of the chatbox */
+    height: 100px;
+    padding: 10px;
+    border-radius: 8px;
+    border: 1px solid #ccc;
+    font-size: 16px;
+    resize: none;
+    font-family: 'Arial', sans-serif;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* Add shadow to textarea */
+    margin-left: auto;
+    margin-right: auto;
+}
+
+        /* Button style */
+        button {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            background-color: #388e3c;
+            color: white;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        button[type="submit"] {
+            background-color: #388e3c;
+        }
+
+        button[name="clear_chat"] {
+            background-color: #f44336;
+        }
+
+        button:hover {
+            background-color: #45a049;
+        }
+
+        button[name="clear_chat"]:hover {
+            background-color: #d32f2f;
+        }
+
+        /* Responsive design */
+        @media (max-width: 768px) {
+            .chat {
+                height: 300px;
+            }
+
+            textarea {
+                width: 90%;
+            }
+
+            button {
+                width: 48%;
+                font-size: 14px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div>
+        <h1>Address Maker</h1>
+
+        <div class="chat" id="chatBox">
+            {% for message in history %}
+                <div class="user-message">
+                    <strong>User:</strong> {{ message.user }}
+                </div>
+                <div class="bot-reply">
+                    <strong>Bot:</strong> {{ message.bot | safe }}
+                </div>
+            {% endfor %}
+        </div>
+
+        <form method="POST">
+            <textarea name="user_input" placeholder="Enter your address text here..." required></textarea>
+            <div style="width: 100%; display: flex; justify-content: space-between;">
+                <button type="submit">
+                    <i class="fas fa-paper-plane"></i> Send
+                </button>
+                <button type="submit" name="clear_chat">
+                    <i class="fas fa-trash-alt"></i> Clear Chat
+                </button>
+            </div>
+        </form>
+    </div>
+
+    <script>
+        // Auto-scroll to the bottom of the chat when a new message is added
+        window.onload = function() {
+            var chatBox = document.getElementById('chatBox');
+            chatBox.scrollTop = chatBox.scrollHeight;
+        };
+
+        // Auto-scroll when a new message is sent
+        document.querySelector('form').onsubmit = function() {
+            var chatBox = document.getElementById('chatBox');
+            setTimeout(function() {
+                chatBox.scrollTop = chatBox.scrollHeight;
+            }, 100);
+        };
+    </script>
+</body>
+</html>
